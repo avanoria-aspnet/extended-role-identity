@@ -810,5 +810,13 @@ form {
 
 /* about me */
 .about-me {
+    background-color: var(--section-background-color);
+    padding: 1rem 4rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 20px;
 
+    [data-type="submit"] {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

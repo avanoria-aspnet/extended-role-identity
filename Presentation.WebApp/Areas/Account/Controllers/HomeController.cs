@@ -2,6 +2,7 @@
 using Application.Abstractions.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.WebApp.Areas.Account.Models;
 using System.Security.Claims;
 
 namespace Presentation.WebApp.Areas.Account.Controllers;
@@ -16,11 +17,33 @@ public class HomeController(IAuthService authService, IAccountService accountSer
         return RedirectToAction(nameof(AboutMe));
     }
 
-    [HttpGet("my-account")]
+
+
+
+
+    [HttpGet("about-me")]
     public IActionResult AboutMe()
     {
-        return View();
+        var user = 
+
+        var viewModel = new AboutMeViewModel();
+        return View(viewModel);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     [HttpGet("sign-out")]
     public new async Task<IActionResult> SignOut()

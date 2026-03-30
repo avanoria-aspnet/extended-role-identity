@@ -1,0 +1,7 @@
+﻿namespace Presentation.WebApp.Areas.Account.Models;
+
+public class AboutMeViewModel
+{
+    public AboutMeForm AboutMeForm { get; set; } = new AboutMeForm();
+    public string? Message { get; set; }
+}

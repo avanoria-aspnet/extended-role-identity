@@ -3,7 +3,8 @@
 public sealed record AccountResult
 (
     bool Succeeded,
-    string? ErrorMessage = null
+    string? ErrorMessage = null,
+    AppUser?
 )
 {
     public static AccountResult Ok() => new(true);
