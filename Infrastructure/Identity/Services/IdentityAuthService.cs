@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Authentication;
 using Application.Common.Results;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity.Services;
 
@@ -40,7 +41,7 @@ public class IdentityAuthService(UserManager<AppUser> userManager, SignInManager
         return new AuthResult(true, "User was created successfully");
     }
 
-    public async Task<AuthResult> SignInUserAsync(string email, string password, bool rememberMe)
+    public async Task<AuthResult> SignInUserAsync(string email, string password, bool rememberMe = false)
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             return new AuthResult(false, "Incorrect email address or password");
@@ -64,4 +65,12 @@ public class IdentityAuthService(UserManager<AppUser> userManager, SignInManager
 
 
     public Task SignOutUserAsync() => signInManager.SignOutAsync();
+
+    public async Task<AuthResult> CheckIfUserExistsAsync(string email)
+    {
+        var result = await userManager.Users.AnyAsync(x => x.Email == email);
+        return result
+            ? AuthResult.Failed("User with same email already exists")
+            : AuthResult.Ok();
+    }
 }

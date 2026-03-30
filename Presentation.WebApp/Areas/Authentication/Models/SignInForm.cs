@@ -15,7 +15,7 @@ public class SignInForm
     public string Password { get; set; } = null!;
 
     [Display(Name = "Remember Me")]
-    public bool RememberMe { get; set; }
+    public bool RememberMe { get; set; } = false;
 
 
     public string? ErrorMessage { get; set; }

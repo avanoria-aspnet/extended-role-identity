@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Authentication;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Presentation.WebApp.Areas.Authentication.Models;
@@ -21,7 +22,7 @@ public class HomeController(IAuthService authService) : Controller
     }
 
     [HttpPost("registration/setup")]
-    public IActionResult Index(SetEmailForm form)
+    public async Task<IActionResult> Index(SetEmailForm form)
     {
         var redirect = RedirectWhenSignedIn;
         if (redirect is not null)
@@ -29,6 +30,13 @@ public class HomeController(IAuthService authService) : Controller
 
         if (!ModelState.IsValid)
             return View(form);
+
+        var result = await authService.CheckIfUserExistsAsync(form.Email);
+        if (!result.Succeeded)
+        {
+            ModelState.AddModelError(nameof(form.ErrorMessage), result.ErrorMessage ?? "A user with same email already exists");
+            return View(form);
+        }
 
         HttpContext.Session.SetString(SessionEmailKey, form.Email);
 
@@ -112,16 +120,14 @@ public class HomeController(IAuthService authService) : Controller
         return View(form);
     }
 
+    public string? FirstName { get; set; }
 
 
 
-
-
-
-    private IActionResult? RedirectWhenSignedIn 
-    { 
-        get 
-        { 
+    private IActionResult? RedirectWhenSignedIn
+    {
+        get
+        {
             if (User.Identity?.IsAuthenticated == true)
             {
                 if (User.IsInRole("Admin"))
@@ -134,7 +140,7 @@ public class HomeController(IAuthService authService) : Controller
             }
 
             return null;
-        } 
+        }
     }
 }
 

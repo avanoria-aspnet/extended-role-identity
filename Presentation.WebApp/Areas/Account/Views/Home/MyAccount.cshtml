@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "My Account";
+}
+
+<aside>
+    <div class="profile-image">
+        <img src="~/images/profile-image-avatar.png" alt="user profile image" />
+    </div>
+    <nav class="menu-options">
+        <ul>
+            <li>
+                Menu Options
+            </li>
+            <li>
+                <a asp-area="Account" asp-controller="Home" asp-action="SignOut">Sign Out</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="remove-account">
+        <p>If you like to cancel your account click below</p>
+        <a asp-area="Account" asp-controller="Home" asp-action="RemoveAccount">Remove Account</a>
+    </div>
+
+</aside>
+<main>
+    main
+</main>

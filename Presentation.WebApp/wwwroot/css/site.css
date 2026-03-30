@@ -785,7 +785,7 @@ form {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-areas: "title" "hr" "email" "submit" "terms";
+    grid-template-areas: "title" "hr" "email" "submit" "terms" "error";
     
     [data-type="terms"] {
         margin-top: 2rem;

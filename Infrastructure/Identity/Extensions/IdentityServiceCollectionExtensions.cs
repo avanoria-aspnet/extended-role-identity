@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Authentication;
+﻿using Application.Abstractions.Account;
+using Application.Abstractions.Authentication;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
@@ -28,12 +29,12 @@ public static class IdentityServiceCollectionExtensions
 
             x.Cookie.IsEssential = true;
             x.Cookie.Name = "corefitness_auth";
-            x.Cookie.MaxAge = TimeSpan.FromDays(90);
             x.ExpireTimeSpan = TimeSpan.FromDays(30);
             x.SlidingExpiration = true;
         });
 
         services.AddScoped<IAuthService, IdentityAuthService>();
+        services.AddScoped<IAccountService, IdentityAccountService>();
 
         return services;
     }
