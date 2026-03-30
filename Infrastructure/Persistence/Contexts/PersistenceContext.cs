@@ -12,4 +12,5 @@ public class PersistenceContext(DbContextOptions<PersistenceContext> options) : 
 
         builder.ApplyConfigurationsFromAssembly(typeof(PersistenceContext).Assembly);
     }
+
 }

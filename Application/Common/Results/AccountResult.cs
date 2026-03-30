@@ -1,13 +1,15 @@
-﻿namespace Application.Common.Results;
+﻿using Application.Dtos;
+
+namespace Application.Common.Results;
 
 public sealed record AccountResult
 (
     bool Succeeded,
-    string? ErrorMessage = null,
-    AppUser?
+    AccountDetails? Details = null,
+    string? ErrorMessage = null
 )
 {
-    public static AccountResult Ok() => new(true);
-    public static AccountResult Failed(string errorMessage) => new(false, errorMessage);
-    public static AccountResult NotFound(string errorMessage = "User not found") => new(false, errorMessage);
+    public static AccountResult Ok(AccountDetails? details = null) => new(true, details);
+    public static AccountResult Failed(string errorMessage) => new(false, null, errorMessage);
+    public static AccountResult NotFound(string errorMessage = "User not found") => new(false, null, errorMessage);
 };

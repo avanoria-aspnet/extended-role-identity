@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Account;
 using Application.Abstractions.Authentication;
+using Application.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Areas.Account.Models;
@@ -22,16 +23,60 @@ public class HomeController(IAuthService authService, IAccountService accountSer
 
 
     [HttpGet("about-me")]
-    public IActionResult AboutMe()
+    public async Task<IActionResult> AboutMe()
     {
-        var user = 
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!string.IsNullOrWhiteSpace(userId))
+        {
+            var account = await accountService.GetUserAccountAsync(userId);
+            var viewModel = new AboutMeViewModel
+            {
+                AboutMeForm = new AboutMeForm
+                {
+                    FirstName = account.Details?.FirstName ?? "",
+                    LastName = account.Details?.LastName ?? "",
+                    Email = account.Details?.Email ?? "",
+                    PhoneNumber = account.Details?.PhoneNumber ?? ""
+                },
+                ProfileImageUrl = account.Details?.ImageUrl ?? "~/images/profile-image-avatar.png"
+            };
 
-        var viewModel = new AboutMeViewModel();
-        return View(viewModel);
+            return View(viewModel);
+        }
+
+        await authService.SignOutUserAsync();
+        return Redirect("/");    
     }
 
 
+    [HttpPost("about-me")]
+    public async Task<IActionResult> AboutMe(AboutMeViewModel viewModel)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+            return RedirectToAction(nameof(SignOut));
 
+        if (!ModelState.IsValid)
+            return View(viewModel);
+
+        var details = new UpdateAccountDetails(
+            userId,
+            viewModel.AboutMeForm.Email,
+            viewModel.AboutMeForm.FirstName,
+            viewModel.AboutMeForm.LastName,
+            viewModel.AboutMeForm.PhoneNumber
+        );
+
+        var result = await accountService.UpdateUserAccountDetailsAsync(details);
+        if (!result.Succeeded)
+        {
+            viewModel.Message = "Unable to save changes";
+            return View(viewModel);
+        }
+
+        return RedirectToAction(nameof(AboutMe));
+
+    }
 
 
 
