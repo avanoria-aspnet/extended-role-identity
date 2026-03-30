@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity.Services;
 
-public class IdentityAuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager) : IAuthService
+public class IdentityAuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager) : IAuthService
 {
-    public async Task<AuthResult> SignUpUserAsync(string email, string password, string roleName = "Member")
+    public async Task<AuthResult> SignUpUserAsync(string email, string password, string? roleName = null)
     {
         if (string.IsNullOrWhiteSpace(email))
             return new AuthResult(false, "Email address must be provided");

@@ -11,7 +11,7 @@ public static class IdentityServiceCollectionExtensions
 {
     public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<AppUser, IdentityRole>(x =>
+        services.AddIdentity<AppUser, AppRole>(x =>
         {
             x.SignIn.RequireConfirmedAccount = false;
             x.User.RequireUniqueEmail = true;
