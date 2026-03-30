@@ -13,11 +13,11 @@ public class HomeController(IAuthService authService, IAccountService accountSer
 {
     public IActionResult Index()
     {
-        return RedirectToAction(nameof(MyAccount));
+        return RedirectToAction(nameof(AboutMe));
     }
 
     [HttpGet("my-account")]
-    public IActionResult MyAccount()
+    public IActionResult AboutMe()
     {
         return View();
     }

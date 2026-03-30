@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "My Account";
+}
+
+<aside>
+    <div class="profile-image">
+        <img src="~/images/profile-image-avatar.png" alt="user profile image" />
+    </div>
+    <nav class="menu-options">
+        <ul>
+            <li>
+                Menu Options
+            </li>
+            <li>
+                <a asp-area="Account" asp-controller="Home" asp-action="SignOut">Sign Out</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="remove-account">
+        <p>If you like to cancel your account click below</p>
+        <a asp-area="Account" asp-controller="Home" asp-action="RemoveAccount">Remove Account</a>
+    </div>
+
+</aside>
+<main>   
+    <section class="about-me">
+        <div class="title">
+            <h2>About Me</h2>
+            <hr />
+        </div>
+        <form id="aboutMeForm" asp-area="Account" asp-controller="Home" asp-action="MyAccount" novalidate>
+            <div data-type="firstname" class="form-group">
+                <label class="form-label"></label>
+                <input class="form-input" />
+                <span class="form-field-validation" ></span>
+            </div>
+            <div data-type="lastname" class="form-group">
+                <label class="form-label"></label>
+                <input class="form-input" />
+                <span class="form-field-validation"></span>
+            </div>
+            <div data-type="email" class="form-group">
+                <label class="form-label"></label>
+                <input class="form-input" />
+                <span class="form-field-validation"></span>
+            </div>
+            <div data-type="phone" class="form-group">
+                <label class="form-label"></label>
+                <input class="form-input" />
+                <span class="form-field-validation"></span>
+            </div>
+            <hr />
+            <div data-type="file" class="form-group">
+                <label class="form-label"></label>
+                <input class="form-input" />
+                <span class="form-field-validation"></span>
+            </div>
+            <button class="btn" type="submit">Save</button>
+        </form>
+    </section>
+</main>
