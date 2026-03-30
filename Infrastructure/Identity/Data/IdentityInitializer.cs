@@ -9,16 +9,24 @@ internal class IdentityInitializer()
     public static async Task InitilizeDefaultRolesAsync(IServiceProvider serviceProvider)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
 
-        var roles = new List<string>() {  "Admin", "Employee", "Member" };
+        var roles = new List<AppRole>()
+        {
+            AppRole.Create("Admin", "Use for administrative accounts"),
+            AppRole.Create("Member", "Use for standard accounts"),
+        };
         
         if (roleManager is not null)
         {
             foreach (var role in roles)
             {
-                if (!await roleManager.RoleExistsAsync(role))
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                if (!string.IsNullOrWhiteSpace(role.Name))
+                {
+                    if (!await roleManager.RoleExistsAsync(role.Name))
+                        await roleManager.CreateAsync(role);
+                }
+
             }
         }
     }
@@ -27,11 +35,11 @@ internal class IdentityInitializer()
     {
         await using var scope = serviceProvider.CreateAsyncScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
 
-        var users = new List<AppUser>() 
-        { 
-            new() { UserName = "admin@domain.com", Email = "admin@domain.com", EmailConfirmed = true }
+        var users = new List<AppUser>()
+        {
+            AppUser.Create("admin@domain.com", true),
         };
 
         if (userManager is not null)
